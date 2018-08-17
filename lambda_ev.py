@@ -13,59 +13,29 @@ import requests
 
 
 EMAILS = {
-    'arnau.villoro@basetis.com': 'Arnau_Villoro',
-    'villoro7@gmail.com': 'Arnau_Villoro',
-    'juanjo.ojeda@basetis.com': 'Juanjo_Ojeda',
-    'gustau.sole@basetis.com': 'Gustau_Sole',
-    'guztavo.sole@gmail.com': 'Gustau_Sole',
-    'guillem.olive@basetis.com': 'Guillem_Olive',
-    'cristina.perezrendon@basetis.com': 'Cristina_PerezRendon',
-    'daniel.vergara@basetis.com': 'Daniel_Vergara',
-    'elisabet.pino@basetis.com': 'Elisabet_Pino',
-    'nikolina.krizanec@basetis.com': 'Nikolina_Krizanec',
-    'roger.calvo@basetis.com': 'Roger_Calvo',
-    'roger.romero@basetis.com': 'Roger_Romero',
-    'tomas.ortega@basetis.com': 'Tomas_Ortega',
-    'gerardo.reichl@basetis.com': 'Gerardo_Reichl',
-    'victor.garciab@basetis.com': 'Victor_Garcia',
-    'xavi.gutierrez@basetis.com': 'Xavi_Gutierrez'
+    'NAME1.SURNAME1@basetis.com': 'NAME1_SURNAME1',
+    'NAME2.SURNAME2@basetis.com': 'NAME2_SURNAME2',
+    # ... Add email and name of all people we want to get the evidences to this dict
 }
 
 PEOPLE = list(set(EMAILS.values()))
 
 REPS = [
     {
-        'name': 'AMM_Reporting',
-        'owner': 'BaseTIS'
+        'name': 'REP1',
+        'owner': 'OWNER1'
     },
     {
-        'name': 'sma_id',
-        'owner': 'BaseTIS'
+        'name': 'REP2',
+        'owner': 'OWNER2'
     },
-    {
-        'name': 'dash-log',
-        'owner': 'sm-analytics'
-    },
-    {
-        'name': 'dash_sma',
-        'owner': 'sm-analytics'
-    },
-    {
-        'name': 'sma_slack',
-        'owner': 'BaseTIS'
-    },
-    {
-        'name': 'sma_welcome',
-        'owner': 'BaseTIS'
-    },
-    {
-        'name': 'AMM_Calidad_Tecnica',
-        'owner': 'BaseTIS'
-    }
+    # ... Add name and owner of all reps we want to get the evidences from
 ]
 
-BUCKET_NAME = 'basetis-services'
-BUCKET_URI = 'am-managers/test/Imputació d\'hores/{date:%Y_%m}/{date:%Y_%m}-{}.zip'
+BUCKET_NAME = 'BUCKET_NAME'
+BUCKET_URI = 'URI_IN_THE_BUCKET'
+
+FOLDER_ID = 'GOOGLE_DRIVE_FOLDER_ID' # ID of the folder where we want the evidences
 
 SLACK_MESSAGES = {
     True: {
@@ -381,7 +351,7 @@ def create_drive_folder(token, mdate=datetime.now()):
     params = {
         "name": "{:%Y_%m}".format(mdate),
         'mimeType': 'application/vnd.google-apps.folder',
-        "parents": ["1Tg--xIaCy4z_3sewqpXQbsOWXAHPdZ-X"],
+        "parents": [FOLDER_ID],
     }
     files = {
         'data': ('metadata', json.dumps(params), 'application/json; charset=UTF-8'),

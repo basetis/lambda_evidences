@@ -1,6 +1,6 @@
-﻿# Lambda evidences
+# Lambda evidences
 
-This folder contains the necessary code to:
+This repository contains the necessary code to:
 
 1. Connect to Bitbucket via API
 2. For each repository, download it's code evidences and store them in a set of .txt files, each one containing the evidences of one person (from a given list of people)
@@ -9,13 +9,15 @@ This folder contains the necessary code to:
 5. Upload these zip files to Google Drive via API.
 6. Send a Slack message with the results of the process.
 
-All these steps are done in the script `lambda_ev.py`. The purpose of this script is to be launched every first day of the month, generate the code evidences of the past month and upload them to different storage services, so then workers can upload them to BaseTIS ERP.
-
-It is important to say that the script contains a list of repositories on which to look for evidences, and a list of people for whom to upload evidences.
-
-In this readme, I will explain in detail how each one of these steps is done, and how to deploy this code to an AWS Lambda.
+(and the necessary libraries to do this).
 
 ![workflow](./figures/lambda-ev.png "Workflow of our lambda")
+
+All these steps are done in the script `lambda_ev.py`. The purpose of this script is to be launched every first day of the month, generate the code evidences of the past month and upload them to different storage services, so then workers can upload them to BaseTIS ERP.
+
+It is important to say that the script contains a list of repositories on which to look for evidences (REPS), a list of people for whom to upload evidences (EMAILS), a name of the S3 bucket on which evidences will be uploaded (BUCKET_NAME), the uri where you want them to be uploaded in the bucket (BUCKET_URI), and the ID of the folder in Google Drive where you want evidences to be uploaded (FOLDER_ID). You have to add all these constants to `lambda_ev.py`.
+
+In this readme, I will explain in detail how each one of these steps is done, and how to deploy this code to an AWS Lambda. If you have cloned the repository and are not interested in the implementation, just in getting the evidences, you can "skip" the explanations. You still have to read them because they explain how to get the necessary tokens to get and upload the evidences. Once you have the tokens, you have to update `lambda_ev.py` with your constants (see previous paragraph), and go directly to read **Deploying in AWS Lambda** (at the bottom of the README).
 
 ## 1. Connect to Bitbucket via API
 
@@ -273,7 +275,9 @@ slack_client.api_call(
 # Deploying in AWS Lambda
 Once we have the script done, it's time to deploy it to an AWS Lambda!
 
-First, we need to add a `lambda_handler` to our script. Its the function that will be called when the lambda is launched.
+**If you have cloned the repository, you can skip this part**
+
+First, we need to add a `lambda_handler` to our script. It's the function that will be called when the lambda is launched.
 
 In our case, our `lambda_handler` is:
 
@@ -287,18 +291,31 @@ def lambda_handler(event, context):
     return True
 ```
 
-Now, we have to create the zip that will be uploaded to AWS. The zip will contain the source code (in this case, `lambda_ev.py`) and all the libraries that we use and are not in installed in the Lambda. In this case, these libraries are `requests` and `slackclient`.
+Now, we have to create the zip that will be uploaded to AWS. The zip will contain the source code (in this case, `lambda_ev.py`) and all the libraries that we use and are not installed in the Lambda. In this case, these libraries are `requests` and `slackclient` (you can see that they are in `requirements.txt`).
 
-To get these libraries, we open a new terminal, navigate to our working folder, and for each library run the following command:
+To get these libraries, we open a new terminal, navigate to our working folder, and run the following command:
 
 ```bash
-pip install LIBRARY_NAME -t ./
+pip install -r requirements.txt -t ./
 ```
 
-Then, we select our source code and the libraries' files and folders and compress them in a zip.
+**If you have cloned the repository, you can start reading here**
 
-Now, we go to AWS and create a new Lambda. To do this, we click on **Create function**, we give it a name, select Python 3.6 as runtime, and select a role.
+To deploy all this to AWS Lambda, we first select all the files in the folder except `README.md` and `requirements.txt` and compress them in a zip file.
 
-Once we have created the Lambda, we go to **Function code**, select **Upload a .ZIP file** and upload our zip. Then, in **Handler**, we put the name of our handler and the script where it is located. In our case, it would be `lambda_ev.lambda_handler`.
+If you don't have access to AWS, ask to Systems (systems.support@basetis.com) for access to AWS and permissions to create Lambdas.
+
+Now, we go to AWS and create a new Lambda. To do this, we first go to the AWS Lambda webpage, we click on **Create function**, we give it a name, select Python 3.6 as runtime, and select a role.
+
+Once we have created the Lambda, we go to **Function code**, select **Upload a .ZIP file** and upload our zip. Then, in **Handler**, we put the name of our handler and the script where it is located. In our case, it would be `lambda_ev.lambda_handler`. Now, you have to add all the tokens that you got in previous steps as environment variables, called:
+
+* BITBUCKET_KEY_ID
+* BITBUCKET_SECRET_KEY
+* BOT_TOKEN
+* GOOGLE_KEY_ID
+* GOOGLE_REFRESH_TOKEN
+* GOOGLE_SECRET_KEY
+* S3_KEY_ID
+* S3_SECRET_KEY
 
 Finally, we add a trigger to our function. In the **Designer** interface, we select **CloudWatch Events** from **Add triggers**. In **Configure trigger**, we select **Create a new rule**, give it a name and a description, select **Schedule expression** and write `cron(0 4 1 * ? *)`. Now we can save the trigger. This trigger is a cron expression that will trigger our lambda every first day of the month at 6:00.
