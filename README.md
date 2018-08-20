@@ -1,4 +1,4 @@
-# Lambda evidences
+﻿# Lambda evidences
 
 This repository contains the necessary code to:
 
@@ -121,7 +121,7 @@ for person in PEOPLE:
 ## 5. Upload these zip files to Google Drive via API
 Now that we have uploaded the files to S3, we upload them to Google Drive via API.
 
-The idea is to have a folder called **Imputació d'hores** (with FolderId 1Tg--xIaCy4z_3sewqpXQbsOWXAHPdZ-X, this is important), in this folder have subfolders of the format **YYYY_MM**, and in this subfolders have the zips of the given month.
+The idea is to have a folder called **Imputació d'hores**, in this folder have subfolders of the format **YYYY_MM**, and in this subfolders have the zips of the given month.
 
 To do this, we need three things:
 
@@ -176,7 +176,7 @@ for folder in json.loads(response.text)['items']:
     folder_id = folder['id']
 
     for parent in folder['parents']:
-        if parent['id'] == '1Tg--xIaCy4z_3sewqpXQbsOWXAHPdZ-X': # The ID of the folder where we upload evidences
+        if parent['id'] == FOLDER_ID: # The ID of the folder where we upload evidences
             requests.delete(
                 'https://www.googleapis.com/drive/v2/files/{}'.format(folder_id),
                 headers=headers
@@ -192,7 +192,7 @@ headers = {"Authorization": "Bearer {}".format(token)}
 params = {
     "name": "{:%Y_%m}".format(mdate), # mdate is any datetime object in the past month
     'mimeType': 'application/vnd.google-apps.folder',
-    "parents": ["1Tg--xIaCy4z_3sewqpXQbsOWXAHPdZ-X"], # The ID of the folder where we upload evidences
+    "parents": [FOLDER_ID], # The ID of the folder where we upload evidences
 }
 files = {
     'data': ('metadata', json.dumps(params), 'application/json; charset=UTF-8'),
