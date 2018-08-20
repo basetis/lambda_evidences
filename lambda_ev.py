@@ -335,7 +335,7 @@ def delete_previous_folders(token, mdate=datetime.now()):
         folder_id = folder['id']
 
         for parent in folder['parents']:
-            if parent['id'] == '1Tg--xIaCy4z_3sewqpXQbsOWXAHPdZ-X':
+            if parent['id'] == FOLDER_ID:
                 requests.delete(
                     'https://www.googleapis.com/drive/v2/files/{}'.format(folder_id),
                     headers=headers
