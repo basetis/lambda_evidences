@@ -1,33 +1,29 @@
 urllib3
 =======
 
-.. image:: https://travis-ci.org/urllib3/urllib3.svg?branch=master
+.. image:: https://travis-ci.org/shazow/urllib3.svg?branch=master
         :alt: Build status on Travis
-        :target: https://travis-ci.org/urllib3/urllib3
+        :target: https://travis-ci.org/shazow/urllib3
 
-.. image:: https://img.shields.io/appveyor/ci/urllib3/urllib3/master.svg
+.. image:: https://img.shields.io/appveyor/ci/shazow/urllib3/master.svg
         :alt: Build status on AppVeyor
-        :target: https://ci.appveyor.com/project/urllib3/urllib3
+        :target: https://ci.appveyor.com/project/shazow/urllib3
 
 .. image:: https://readthedocs.org/projects/urllib3/badge/?version=latest
         :alt: Documentation Status
         :target: https://urllib3.readthedocs.io/en/latest/
 
-.. image:: https://img.shields.io/codecov/c/github/urllib3/urllib3.svg
+.. image:: https://img.shields.io/codecov/c/github/shazow/urllib3.svg
         :alt: Coverage Status
-        :target: https://codecov.io/gh/urllib3/urllib3
+        :target: https://codecov.io/gh/shazow/urllib3
 
 .. image:: https://img.shields.io/pypi/v/urllib3.svg?maxAge=86400
         :alt: PyPI version
-        :target: https://pypi.org/project/urllib3/
+        :target: https://pypi.python.org/pypi/urllib3
 
 .. image:: https://www.bountysource.com/badge/tracker?tracker_id=192525
         :alt: Bountysource
         :target: https://www.bountysource.com/trackers/192525-urllib3?utm_source=192525&utm_medium=shield&utm_campaign=TRACKER_BADGE
-
-.. image:: https://badges.gitter.im/python-urllib3/Lobby.svg
-        :alt: Gitter
-        :target: https://gitter.im/python-urllib3/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
 
 urllib3 is a powerful, *sanity-friendly* HTTP client for Python. Much of the
 Python ecosystem already uses urllib3 and you should too.
@@ -53,7 +49,6 @@ urllib3 is powerful and easy to use::
     >>> r.data
     'User-agent: *\nDisallow: /deny\n'
 
-
 Installing
 ----------
 
@@ -61,9 +56,9 @@ urllib3 can be installed with `pip <https://pip.pypa.io>`_::
 
     $ pip install urllib3
 
-Alternatively, you can grab the latest source code from `GitHub <https://github.com/urllib3/urllib3>`_::
+Alternatively, you can grab the latest source code from `GitHub <https://github.com/shazow/urllib3>`_::
 
-    $ git clone git://github.com/urllib3/urllib3.git
+    $ git clone git://github.com/shazow/urllib3.git
     $ python setup.py install
 
 
@@ -80,19 +75,14 @@ urllib3 happily accepts contributions. Please see our
 `contributing documentation <https://urllib3.readthedocs.io/en/latest/contributing.html>`_
 for some tips on getting started.
 
-
 Maintainers
 -----------
 
-- `@theacodes <https://github.com/theacodes>`_ (Thea Flowers)
-- `@SethMichaelLarson <https://github.com/SethMichaelLarson>`_ (Seth M. Larson)
-- `@haikuginger <https://github.com/haikuginger>`_ (Jesse Shapiro)
 - `@lukasa <https://github.com/lukasa>`_ (Cory Benfield)
 - `@sigmavirus24 <https://github.com/sigmavirus24>`_ (Ian Cordasco)
 - `@shazow <https://github.com/shazow>`_ (Andrey Petrov)
 
 👋
-
 
 Sponsorship
 -----------
@@ -100,44 +90,9 @@ Sponsorship
 If your company benefits from this library, please consider `sponsoring its
 development <https://urllib3.readthedocs.io/en/latest/contributing.html#sponsorship>`_.
 
-Sponsors include:
-
-- Google Cloud Platform (2018-present), sponsors `@theacodes <https://github.com/theacodes>`_'s work on an ongoing basis
-- Abbott (2018-present), sponsors `@SethMichaelLarson <https://github.com/SethMichaelLarson>`_'s work on an ongoing basis
-- Akamai (2017-present), sponsors `@haikuginger <https://github.com/haikuginger>`_'s work on an ongoing basis
-- Hewlett Packard Enterprise (2016-2017), sponsored `@Lukasa’s <https://github.com/Lukasa>`_ work on urllib3
-
 
 Changes
 =======
-
-1.23 (2018-06-04)
------------------
-
-* Allow providing a list of headers to strip from requests when redirecting
-  to a different host. Defaults to the ``Authorization`` header. Different
-  headers can be set via ``Retry.remove_headers_on_redirect``. (Issue #1316)
-
-* Fix ``util.selectors._fileobj_to_fd`` to accept ``long`` (Issue #1247).
-
-* Dropped Python 3.3 support. (Pull #1242)
-
-* Put the connection back in the pool when calling stream() or read_chunked() on
-  a chunked HEAD response. (Issue #1234)
-
-* Fixed pyOpenSSL-specific ssl client authentication issue when clients
-  attempted to auth via certificate + chain (Issue #1060)
-
-* Add the port to the connectionpool connect print (Pull #1251)
-
-* Don't use the ``uuid`` module to create multipart data boundaries. (Pull #1380)
-
-* ``read_chunked()`` on a closed response returns no chunks. (Issue #1088)
-
-* Add Python 2.6 support to ``contrib.securetransport`` (Pull #1359)
-
-* Added support for auth info in url for SOCKS proxy (Pull #1363)
-
 
 1.22 (2017-07-20)
 -----------------
@@ -227,7 +182,7 @@ Changes
 * Fix some bugs that occur when modules incautiously patch the queue module.
   (Pull #1061)
 
-* Prevent retries from occurring on read timeouts for which the request method
+* Prevent retries from occuring on read timeouts for which the request method
   was not in the method whitelist. (Issue #1059)
 
 * Changed the PyOpenSSL contrib module to lazily load idna to avoid
@@ -261,7 +216,7 @@ Changes
   non-httplib underlying FPs. (Pull #990)
 
 * Empty filenames in multipart headers are now emitted as such, rather than
-  being suppressed. (Issue #1015)
+  being supressed. (Issue #1015)
 
 * Prefer user-supplied Host headers on chunked uploads. (Issue #1009)
 
@@ -622,7 +577,7 @@ Changes
 * All errors during a retry-enabled request should be wrapped in
   ``urllib3.exceptions.MaxRetryError``, including timeout-related exceptions
   which were previously exempt. Underlying error is accessible from the
-  ``.reason`` property. (Issue #326)
+  ``.reason`` propery. (Issue #326)
 
 * ``urllib3.exceptions.ConnectionError`` renamed to
   ``urllib3.exceptions.ProtocolError``. (Issue #326)
@@ -990,7 +945,7 @@ Changes
 * Refactored code to be even more decoupled, reusable, and extendable.
 * License header added to ``.py`` files.
 * Embiggened the documentation: Lots of Sphinx-friendly docstrings in the code
-  and docs in ``docs/`` and on https://urllib3.readthedocs.io/.
+  and docs in ``docs/`` and on urllib3.readthedocs.org.
 * Embettered all the things!
 * Started writing this file.
 
