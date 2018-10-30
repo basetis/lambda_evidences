@@ -1,7 +1,7 @@
 Metadata-Version: 2.1
 Name: websocket-client
-Version: 0.49.0
-Summary: WebSocket client for python. hybi13 is supported.
+Version: 0.53.0
+Summary: WebSocket client for Python. hybi13 is supported.
 Home-page: https://github.com/websocket-client/websocket-client.git
 Author: liris
 Author-email: liris.pp@gmail.com
@@ -12,13 +12,20 @@ Classifier: Development Status :: 4 - Beta
 Classifier: License :: OSI Approved :: GNU Library or Lesser General Public License (LGPL)
 Classifier: Programming Language :: Python
 Classifier: Programming Language :: Python :: 2
+Classifier: Programming Language :: Python :: 2.6
+Classifier: Programming Language :: Python :: 2.7
 Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.4
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
 Classifier: Operating System :: MacOS :: MacOS X
 Classifier: Operating System :: POSIX
 Classifier: Operating System :: Microsoft :: Windows
 Classifier: Topic :: Internet
 Classifier: Topic :: Software Development :: Libraries :: Python Modules
 Classifier: Intended Audience :: Developers
+Requires-Python: >=2.6, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*
 Requires-Dist: six
 
 =================
@@ -38,15 +45,15 @@ License
 Installation
 =============
 
-This module is tested on Python 2.7 and Python 3.x.
+This module is tested on Python 2.7 and Python 3.4+.
 
 Type "python setup.py install" or "pip install websocket-client" to install.
 
 .. CAUTION::
 
-  from v0.16.0, we can install by "pip install websocket-client" for python 3.
+  from v0.16.0, we can install by "pip install websocket-client" for Python 3.
 
-This module depend on
+This module depends on
 
  - six
  - backports.ssl_match_hostname for Python 2.x
@@ -61,7 +68,7 @@ You can get the best performance from numpy.
 How about Python 3
 ===========================
 
-Now, we support python 3 on  single source code from version 0.14.0. Thanks, @battlemidget and @ralphbean.
+Now, we support Python 3 on single source code from version 0.14.0. Thanks, @battlemidget and @ralphbean.
 
 HTTP Proxy
 =============
@@ -128,53 +135,6 @@ This example is similar to how WebSocket code looks in browsers using JavaScript
         ws.on_open = on_open
         ws.run_forever()
 
-
-Class inheritance
------------------
-Same as above with class inheritance.
-
-.. code:: python
-
-    import websocket
-    from threading import Thread
-    import time
-    import sys
-
-
-    class MyApp(websocket.WebSocketApp):
-        def on_message(self, message):
-            print(message)
-
-        def on_error(self, error):
-            print(error)
-
-        def on_close(self):
-            print("### closed ###")
-
-        def on_open(self):
-            def run(*args):
-                for i in range(3):
-                    # send the message, then wait
-                    # so thread doesn't exit and socket
-                    # isn't closed
-                    self.send("Hello %d" % i)
-                    time.sleep(1)
-
-                time.sleep(1)
-                self.close()
-                print("Thread terminating...")
-
-            Thread(target=run).start()
-
-
-    if __name__ == "__main__":
-        websocket.enableTrace(True)
-        if len(sys.argv) < 2:
-            host = "ws://echo.websocket.org/"
-        else:
-            host = sys.argv[1]
-        ws = MyApp(host)
-        ws.run_forever()
 
 
 Short-lived one-off send-receive

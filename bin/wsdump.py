@@ -1,4 +1,4 @@
-#!C:\Miniconda3\python.exe
+#!C:\Anaconda3\python.exe
 
 import argparse
 import code
